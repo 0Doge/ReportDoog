@@ -49,7 +49,7 @@ def handle_message(event):
                     ):
                     raise Exception
                 # 得到學號
-                ID = receivedmsg.split('學號')[-1].split('電話')[0][1:]
+                ID = receivedmsg.split('學號')[-1].split('姓名')[0][1:]
                 # 直接完整save學號 -Garrett, 2021.01.28  
                 ID = int(ID)
                 # 學號不再限定只有5碼 -Garrett, 2021.01.28  
@@ -58,7 +58,7 @@ def handle_message(event):
                 #elif len(ID)<=4:
                 #    ID = int(ID)
             except Exception:
-                LineMessage = '學號、姓名、手機，其中一項未填。'    
+                LineMessage = '學號、姓名、手機，其中一項未填。'+    receivedmsg.split('學號')[-1].split('姓名')[0]+receivedmsg.split('姓名')[-1].split('電話')[0]
             else:
                 reportData[groupID][ID] = receivedmsg
                 LineMessage = str(ID)+'號弟兄，回報成功。'
