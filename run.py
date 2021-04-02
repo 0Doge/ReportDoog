@@ -41,17 +41,15 @@ def handle_message(event):
             reportData[groupID]={}
         LineMessage = ''
         receivedmsg = event.message.text
-        if '姓名' in receivedmsg and '學號' in receivedmsg and '手機' in receivedmsg:
+        if  '學號' in receivedmsg and '姓名' in receivedmsg and '電話' in receivedmsg:
             try:
                 if ( # 檢查資料是否有填，字數注意有換行符
-                    len(receivedmsg.split('姓名')[-1].split('學號')[0])<3 and
-                    len(receivedmsg.split("學號")[-1].split('手機')[0])<3 and 
-                    len(receivedmsg.split('手機')[-1].split('地點')[0])<12 and 
-                    len(receivedmsg.split('地點')[-1].split('收假方式')[0])<3
+                    len(receivedmsg.split('學號')[-1].split('姓名')[0])<3 and
+                    len(receivedmsg.split("姓名")[-1].split('電話')[0])<3 and 
                     ):
                     raise Exception
                 # 得到學號
-                ID = receivedmsg.split("學號")[-1].split('手機')[0][1:]
+                ID = receivedmsg.split("學號")[-1].split('電話')[0][1:]
                 # 直接完整save學號 -Garrett, 2021.01.28  
                 ID = int(ID)
                 # 學號不再限定只有5碼 -Garrett, 2021.01.28  
@@ -60,7 +58,7 @@ def handle_message(event):
                 #elif len(ID)<=4:
                 #    ID = int(ID)
             except Exception:
-                LineMessage = '姓名、學號、手機、地點，其中一項未填。'    
+                LineMessage = '學號、姓名、手機，其中一項未填。'    
             else:
                 reportData[groupID][ID] = receivedmsg
                 LineMessage = str(ID)+'號弟兄，回報成功。'
@@ -72,14 +70,15 @@ def handle_message(event):
                 '----------\n'
                 '姓名：\n'
                 '學號：\n'
-                '手機：\n'
-                '地點：\n'
-                '收假方式：\n'
+                '電話：\n'
+                '.....\n'
                 '----------\n'
                 '\n'
                 '指令\n' 
                 '----------\n'   
-                '•格式\n'
+                '•放假格式\n'
+                '•假日格式\n'
+                '•收假格式\n'
                 '->正確格式範例。\n'
                 '•回報統計\n'
                 '->顯示完成回報的號碼。\n'
@@ -87,9 +86,7 @@ def handle_message(event):
                 '->貼出所有回報，並清空回報紀錄。\n'
                 '•清空\n'
                 '->可手動清空Data，除錯用。\n'
-                '----------\n' 
-                '效果可參閱此說明\n'
-                'https://github.com/GarrettTW/linebot_reportmessage/blob/master/README.md'
+
             )
         elif '回報統計' in receivedmsg and len(receivedmsg)==4:
             try:
@@ -109,9 +106,13 @@ def handle_message(event):
             else:
                 reportData[groupID].clear()
 
-        elif '格式' in receivedmsg and len(receivedmsg)==2:
-            LineMessage = '姓名：\n學號：\n手機：\n地點：\n收假方式：'
-            
+        elif '放假格式' in receivedmsg and len(receivedmsg)==4:
+            LineMessage = '學號：\n姓名：\n電話：\n返家狀況：'
+        elif '假日格式' in receivedmsg and len(receivedmsg)==4:
+            LineMessage = '學號：\n姓名：\n電話：\n地點：\n做什麼：\n預計返家時間：\n跟誰：
+        elif '收假格式' in receivedmsg and len(receivedmsg)==4:
+            LineMessage = '學號：\n姓名：\n電話：\n地點：\n做什麼：\n跟誰：\n收假方式：\n：
+
         # for Error Debug, Empty all data -Sophia_Chen, 2021.01.25        
         elif '清空' in receivedmsg and len(receivedmsg)==2:
             reportData[groupID].clear()
