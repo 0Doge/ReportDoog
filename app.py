@@ -30,6 +30,7 @@ def callback():
         abort(400)
     return 'OK'
 
+# 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     # 各群組的資訊互相獨立
@@ -43,57 +44,33 @@ def handle_message(event):
             reportData[groupID]={}
         LineMessage = ''
         receivedmsg = event.message.text
-        if '姓名' in receivedmsg and '學號' in receFFFivedmsg and '電話' in receivedmsg: and '返家狀況' in receivedmsg:
+        if '姓名' in receivedmsg and '學號' in receivedmsg and '手機' in receivedmsg:
             try:
                 if ( # 檢查資料是否有填，字數注意有換行符
                     len(receivedmsg.split('姓名')[-1].split('學號')[0])<3 and
-                    len(receivedmsg.split("學號")[-1].split('電話')[0])<3 and 
-                    len(receivedmsg.split('電話')[-1].split('返家狀況')[0])<12 
+                    len(receivedmsg.split("學號")[-1].split('手機')[0])<3 and 
+                    len(receivedmsg.split('手機')[-1].split('地點')[0])<12 and 
+                    len(receivedmsg.split('地點')[-1].split('收假方式')[0])<3
                     ):
                     raise Exception
-                    # 得到學號
-                    ID = receivedmsg.split("學號")[-1].split('電話')[0][1:]
-                    # 直接完整save學號 -Garrett, 2021.01.28  
-                    ID = int(ID)
-                    # 學號不再限定只有5碼 -Garrett, 2021.01.28  
-                    #if len(ID)==6:
-                    #    ID = int(ID[-4:])
-                    #elif len(ID)<=4:
-                    #    ID = int(ID)
-                except Exception:
-                    LineMessage = '姓名、學號、電話、返家狀況，其中一項未填。'    
-                else:
-                    reportData[groupID][ID] = receivedmsg
-                    LineMessage = str(ID)+'號弟兄，回報成功。'
+                # 得到學號
+                ID = receivedmsg.split("學號")[-1].split('手機')[0][1:]
+                # 直接完整save學號 -Garrett, 2021.01.28  
+                ID = int(ID)
+                # 學號不再限定只有5碼 -Garrett, 2021.01.28  
+                #if len(ID)==6:
+                #    ID = int(ID[-4:])
+                #elif len(ID)<=4:
+                #    ID = int(ID)
+            except Exception:
+                LineMessage = '姓名、學號、手機、地點，其中一項未填。'    
+            else:
+                reportData[groupID][ID] = receivedmsg
+                LineMessage = str(ID)+'號弟兄，回報成功。'
 
-
-        elif '姓名' in receivedmsg and '學號' in receFFFivedmsg and '電話' in receivedmsg: and '地點' in receivedmsg: and '做什麼' in receivedmsg: 
-            try:
-                if ( # 檢查資料是否有填，字數注意有換行符
-                    len(receivedmsg.split('姓名')[-1].split('學號')[0])<3 and
-                    len(receivedmsg.split("學號")[-1].split('電話')[0])<3 and 
-                    len(receivedmsg.split('電話')[-1].split('做什麼')[0])<12 
-                    ):
-                    raise Exception
-                    # 得到學號
-                    ID = receivedmsg.split("學號")[-1].split('電話')[0][1:]
-                    # 直接完整save學號 -Garrett, 2021.01.28  
-                    ID = int(ID)
-                    # 學號不再限定只有5碼 -Garrett, 2021.01.28  
-                    #if len(ID)==6:
-                    #    ID = int(ID[-4:])
-                    #elif len(ID)<=4:
-                    #    ID = int(ID)
-                except Exception:
-                    LineMessage = '姓名、學號、電話、做什麼，其中一項未填。'    
-                else:
-                    reportData[groupID][ID] = receivedmsg
-                    LineMessage = str(ID)+'號弟兄，回報成功。'
-
-                
-        elif '用說明' in receivedmsg and len(receivedmsg)==4:
-            LinMessage = (
-            '收到以下正確格式\n'
+        elif '使用說明' in receivedmsg and len(receivedmsg)==4:
+            LineMessage = (
+                '收到以下正確格式\n'
                 '才會正確記錄回報。\n'
                 '----------\n'
                 '姓名：\n'
@@ -117,33 +94,6 @@ def handle_message(event):
                 '效果可參閱此說明\n'
                 'https://github.com/GarrettTW/linebot_reportmessage/blob/master/README.md'
             )
-
-        elif '姓名' in receivedmsg and '學號' in receivedmsg and '電話' in receivedmsg:
-            try:
-                if ( # 檢查資料是否有填，字數注意有換行符
-                    len(receivedmsg.split('姓名')[-1].split('學號')[0])<3 and
-                    len(receivedmsg.split("學號")[-1].split('電話')[0])<3 and 
-                    len(receivedmsg.split('電話')[-1].split('地點')[0])<12 and 
-                    len(receivedmsg.split('地點')[-1].split('收假方式')[0])<3
-                    ):
-                    raise Exception
-                # 得到學號
-                ID = receivedmsg.split("學號")[-1].split('手機')[0][1:]
-                # 直接完整save學號 -Garrett, 2021.01.28  
-                ID = int(ID)
-                # 學號不再限定只有5碼 -Garrett, 2021.01.28  
-                #if len(ID)==6:
-                #    ID = int(ID[-4:])
-                #elif len(ID)<=4:
-                #    ID = int(ID)
-            except Exception:
-                LineMessage = '姓名、學號、電話、地點，其中一項未填。'    
-            else:
-                reportData[groupID][ID] = receivedmsg
-                LineMessage = str(ID)+'號弟兄，回報成功。'
-
-
-
         elif '回報統計' in receivedmsg and len(receivedmsg)==4:
             try:
                 LineMessage = (
@@ -173,6 +123,7 @@ def handle_message(event):
         if LineMessage :
             message = TextSendMessage(text=LineMessage)
             line_bot_api.reply_message(event.reply_token, message)
+
 
 import os
 if __name__ == "__main__":
