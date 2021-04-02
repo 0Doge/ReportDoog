@@ -45,11 +45,11 @@ def handle_message(event):
             try:
                 if ( # 檢查資料是否有填，字數注意有換行符
                     len(receivedmsg.split('學號')[-1].split('姓名')[0])<3 and
-                    len(receivedmsg.split("姓名")[-1].split('電話')[0])<3 
+                    len(receivedmsg.split('姓名')[-1].split('電話')[0])<3 
                     ):
                     raise Exception
                 # 得到學號
-                ID = receivedmsg.split("學號")[-1].split('電話')[0][1:]
+                ID = receivedmsg.split('學號')[-1].split('電話')[0][1:]
                 # 直接完整save學號 -Garrett, 2021.01.28  
                 ID = int(ID)
                 # 學號不再限定只有5碼 -Garrett, 2021.01.28  
