@@ -1,4 +1,3 @@
-  
 from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -39,7 +38,6 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
     else:
         if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
-
             reportData[groupID]={}
         LineMessage = ''
         receivedmsg = event.message.text
@@ -123,8 +121,8 @@ def handle_message(event):
             message = TextSendMessage(text=LineMessage)
             line_bot_api.reply_message(event.reply_token, message)
 
-
-import os
 if __name__ == "__main__":
+    global reportData
+    reportData = {}
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
