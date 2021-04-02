@@ -59,7 +59,7 @@ def handle_message(event):
                 #elif len(ID)<=4:
                 #    ID = int(ID)
             except Exception:
-                LineMessage = '學號、姓名，其中一項未填或錯誤。'+    receivedmsg.split('學號')[-1].split('姓名')[0]+receivedmsg.split('姓名')[-1].split('電話')[0] +receivedmsg.split('電話')[1].split('\n')[0]) <12
+                LineMessage = '學號、姓名，其中一項未填或錯誤。'+    receivedmsg.split('學號')[-1].split('姓名')[0]+receivedmsg.split('姓名')[-1].split('電話')[0] +receivedmsg.split('電話')[1].split('\n')[0]) 
             else:
                 reportData[groupID][ID] = receivedmsg
                 LineMessage = str(ID)+'號弟兄，回報成功。'
