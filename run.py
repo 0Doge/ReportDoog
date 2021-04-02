@@ -45,7 +45,8 @@ def handle_message(event):
             try:
                 if ( # 檢查資料是否有填，字數注意有換行符
                     len(receivedmsg.split('學號')[-1].split('姓名')[0])<3 and
-                    len(receivedmsg.split('姓名')[-1].split('電話')[0])<3 
+                    len(receivedmsg.split('姓名')[-1].split('電話')[0])<3 and
+                    len(receivedmsg.split('電話')[1].split('\n')[0]) <12
                     ):
                     raise Exception
                 # 得到學號
@@ -58,7 +59,7 @@ def handle_message(event):
                 #elif len(ID)<=4:
                 #    ID = int(ID)
             except Exception:
-                LineMessage = '學號、姓名、手機，其中一項未填。'+    receivedmsg.split('學號')[-1].split('姓名')[0]+receivedmsg.split('姓名')[-1].split('電話')[0]
+                LineMessage = '學號、姓名，其中一項未填或錯誤。'+    receivedmsg.split('學號')[-1].split('姓名')[0]+receivedmsg.split('姓名')[-1].split('電話')[0] +receivedmsg.split('電話')[1].split('\n')[0]) <12
             else:
                 reportData[groupID][ID] = receivedmsg
                 LineMessage = str(ID)+'號弟兄，回報成功。'
@@ -71,7 +72,7 @@ def handle_message(event):
                 '姓名：\n'
                 '學號：\n'
                 '電話：\n'
-                '.....\n'
+                '(下方欄位依回報類型更改)\n'
                 '----------\n'
                 '\n'
                 '指令\n' 
