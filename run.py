@@ -112,7 +112,7 @@ def handle_message(event):
         elif '假日格式' in receivedmsg and len(receivedmsg)==4:
             LineMessage = '學號：\n姓名：\n電話：\n地點：\n做什麼：\n預計返家時間：\n跟誰：'
         elif '收假格式' in receivedmsg and len(receivedmsg)==4:
-            LineMessage = '學號：\n姓名：\n電話：\n地點：\n做什麼：\n跟誰：\n收假方式：\n：'
+            LineMessage = '學號：\n姓名：\n電話：\n地點：\n做什麼：\n跟誰：\n收假方式：'
 
         # for Error Debug, Empty all data -Sophia_Chen, 2021.01.25        
         elif '清空' in receivedmsg and len(receivedmsg)==2:
