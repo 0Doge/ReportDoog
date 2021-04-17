@@ -2,15 +2,38 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
 import sys
 import os
 
 app = Flask(__name__)
 
+
+# 初始化firebase
+cred = credentials.Certificate('serviceAccount.json')
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+
 # Channel Access Token
 line_bot_api = LineBotApi('YSV+EfqET6Kn3qkF536b0YgG1xBf3Jl83qadQ1V9D/cFPMUvK2IS/a4kelDU2+FryPUXMmmEITp39D7lA2MM7bKo/mOsTtSCl1gMjJyX8ca4ntKU5RvE6X7F+y+eTSFY3RlVGz4dEvt+aFFofdofIgdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
 handler = WebhookHandler('2201e72fbd866e3b881adcaf9e61a972')
+
+
+def get_report_data(groupId):
+    doc_ref = db.collection("ReportGroup").document(groupId)
+    doc = doc_ref.get()
+    if doc.exists:
+        return doc.to_dict()
+    else:
+        return {}
+
+def update_report_data(groupId, data):
+    doc_ref = db.collection("ReportGroup").document(groupId)
+    doc_ref.set(data)
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -37,8 +60,9 @@ def handle_message(event):
         message = TextSendMessage(text='我只接收群組內訊息，請先把我邀請到群組!')
         line_bot_api.reply_message(event.reply_token, message)
     else:
-        if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
-            reportData[groupID]={}
+        reportData[groupID] = get_report_data(groupID)
+        # if not reportData.get(groupID): # 如果此群組為新加入，會創立一個新的儲存區
+        #     reportData[groupID]={}
         LineMessage = ''
         receivedmsg = event.message.text
         if  '學號' in receivedmsg and '姓名' in receivedmsg and '電話' in receivedmsg:
@@ -122,6 +146,8 @@ def handle_message(event):
         if LineMessage :
             message = TextSendMessage(text=LineMessage)
             line_bot_api.reply_message(event.reply_token, message)
+        
+        update_report_data(groupID, reportData[groupID])
 
 if __name__ == "__main__":
     global reportData
