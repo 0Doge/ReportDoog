@@ -24,7 +24,7 @@ handler = WebhookHandler('2201e72fbd866e3b881adcaf9e61a972')
 
 
 def get_report_data(groupId):
-    doc_ref = db.collection("ReportGroup").document(groupId)
+    doc_ref = db.collection("ReportGroup").document(groupId.toString())
     doc = doc_ref.get()
     if doc.exists:
         return doc.to_dict()
@@ -32,7 +32,7 @@ def get_report_data(groupId):
         return {}
 
 def update_report_data(groupId, data):
-    doc_ref = db.collection("ReportGroup").document(groupId)
+    doc_ref = db.collection("ReportGroup").document(groupId.toString())
     doc_ref.set(data)
 
 # 監聽所有來自 /callback 的 Post Request
