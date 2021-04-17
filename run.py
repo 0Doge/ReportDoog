@@ -85,7 +85,7 @@ def handle_message(event):
             except Exception:
                 LineMessage = '學號、姓名，其中一項未填或錯誤。'
             else:
-                reportData[groupID][ID] = receivedmsg
+                reportData[groupID][str(ID)] = receivedmsg
                 LineMessage = str(ID)+'號弟兄，回報成功。'
 
         elif '使用說明' in receivedmsg and len(receivedmsg)==4:
