@@ -18,9 +18,9 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Channel Access Token
-line_bot_api = LineBotApi('YSV+EfqET6Kn3qkF536b0YgG1xBf3Jl83qadQ1V9D/cFPMUvK2IS/a4kelDU2+FryPUXMmmEITp39D7lA2MM7bKo/mOsTtSCl1gMjJyX8ca4ntKU5RvE6X7F+y+eTSFY3RlVGz4dEvt+aFFofdofIgdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi('rg2asHKOCPU6UvRmfpIXfx2XRu8pKgyCxws1oIsrjx5x7yWSe6YcBXbtazmzRNzm5h46U3Cr4hhW+UXq8lNQp0p5JQzNrfrc3M7Z0HlJ1TlCItsTo9MRhhWjmzjkZAUIil6ZhLUO1XNoQ4NsjpZyggdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
-handler = WebhookHandler('2201e72fbd866e3b881adcaf9e61a972')
+handler = WebhookHandler('8e9abc1c60a46cb47bee1c32aec131ee')
 
 
 def get_report_data(groupId):
@@ -68,13 +68,13 @@ def handle_message(event):
         if  '學號' in receivedmsg and '姓名' in receivedmsg and '電話' in receivedmsg:
             try:
                 if ( # 檢查資料是否有填，字數注意有換行符
-                    len(receivedmsg.split('學號')[-1].split('姓名')[0])<3 or
-                    len(receivedmsg.split('姓名')[-1].split('電話')[0])<3 or
-                    len(receivedmsg.split('電話')[1].split('\n')[0]) <10
+                    len(receivedmsg.split('學號')[-1].split('\n')[0])<6 or
+                    len(receivedmsg.split('姓名')[-1].split('\n')[0])<4 or
+                    len(receivedmsg.split('電話')[1].split('\n')[0]) <11
                     ):
                     raise Exception
                 # 得到學號
-                ID = receivedmsg.split('學號')[-1].split('姓名')[0][1:]
+                ID = receivedmsg.split('學號')[-1].split('\n')[0][1:]
                 # 直接完整save學號 -Garrett, 2021.01.28  
                 ID = int(ID)
                 # 學號不再限定只有5碼 -Garrett, 2021.01.28  
