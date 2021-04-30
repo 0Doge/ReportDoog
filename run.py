@@ -17,10 +17,13 @@ cred = credentials.Certificate('serviceAccount.json')
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
+
+config = configparser.ConfigParser()
+config.read('config.ini')
 # Channel Access Token
-line_bot_api = LineBotApi('rg2asHKOCPU6UvRmfpIXfx2XRu8pKgyCxws1oIsrjx5x7yWSe6YcBXbtazmzRNzm5h46U3Cr4hhW+UXq8lNQp0p5JQzNrfrc3M7Z0HlJ1TlCItsTo9MRhhWjmzjkZAUIil6ZhLUO1XNoQ4NsjpZyggdB04t89/1O/w1cDnyilFU=')
+line_bot_api = LineBotApi(config.get('line-bot', 'channel_access_token'))
 # Channel Secret
-handler = WebhookHandler('8e9abc1c60a46cb47bee1c32aec131ee')
+handler = WebhookHandler(config.get('line-bot', 'channel_secret'))
 
 
 def get_report_data(groupId):
