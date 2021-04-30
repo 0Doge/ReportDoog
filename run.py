@@ -68,8 +68,8 @@ def handle_message(event):
         if  '學號' in receivedmsg and '姓名' in receivedmsg and '電話' in receivedmsg:
             try:
                 if ( # 檢查資料是否有填，字數注意有換行符
-                    len(receivedmsg.split('學號')[-1].split('\n')[0])<6 or
-                    len(receivedmsg.split('姓名')[-1].split('\n')[0])<4 or
+                    len(receivedmsg.split('學號')[-1].split('\n')[0])<4 or
+                    len(receivedmsg.split('姓名')[-1].split('\n')[0])<3 or
                     len(receivedmsg.split('電話')[1].split('\n')[0]) <11
                     ):
                     raise Exception
@@ -77,6 +77,13 @@ def handle_message(event):
                 ID = receivedmsg.split('學號')[-1].split('\n')[0][1:]
                 # 直接完整save學號 -Garrett, 2021.01.28  
                 ID = int(ID)
+                
+                #無{ 學號: }欄位取得學號方式
+                #import re
+                #ID =  [float(s) for s in re.findall(r'-?\d+\.?\d*', receivedmsg)]
+                #ID = int(ID[0])
+
+
                 # 學號不再限定只有5碼 -Garrett, 2021.01.28  
                 #if len(ID)==6:
                 #    ID = int(ID[-4:])
