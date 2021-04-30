@@ -5,6 +5,7 @@ from linebot.models import *
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+import configparser
 
 import sys
 import os
